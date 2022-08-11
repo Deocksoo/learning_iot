@@ -1,0 +1,10 @@
+GET localhost:8080/open/socket
+
+###
+GET localhost:8080/send?message=hehehe
+
+###
+GET localhost:8080/send-with-offset?message=hehehe
+
+###
+GET localhost:8080/release

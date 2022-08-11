@@ -9,5 +9,4 @@ public class LearningIotRelayApplication {
     public static void main(String[] args) {
         SpringApplication.run(LearningIotRelayApplication.class, args);
     }
-
 }
