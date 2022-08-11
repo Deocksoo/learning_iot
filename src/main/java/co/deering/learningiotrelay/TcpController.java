@@ -46,6 +46,8 @@ public class TcpController {
     public void send(@RequestParam String message) {
         byte[] encoded = message.getBytes(StandardCharsets.UTF_16BE);
         PRINT_WRITER.println(encoded);
+        log.info("message \"{}\" sent", message);
+        log.info("encoded message \"{}\" sent", encoded);
     }
 
     @GetMapping("/send-with-offset")
@@ -53,6 +55,8 @@ public class TcpController {
         byte[] encoded = message.getBytes(StandardCharsets.UTF_16BE);
         byte[] withOffset = Arrays.copyOfRange(encoded, 2, encoded.length);
         PRINT_WRITER.println(withOffset);
+        log.info("message \"{}\" sent", message);
+        log.info("encoded message \"{}\" sent", encoded);
     }
 
     @GetMapping("/listen")
