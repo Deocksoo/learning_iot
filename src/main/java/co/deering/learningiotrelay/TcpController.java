@@ -11,6 +11,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
@@ -53,12 +54,16 @@ public class TcpController {
 
     @GetMapping("/send-with-offset")
     public void sendWithOffset(@RequestParam String message) throws IOException {
+        ByteBuffer buffer = ByteBuffer.allocate(4);
+        buffer.order(ByteOrder.BIG_ENDIAN);
+        buffer.putInt(0xFFFF);
+        buffer.flip();
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        outputStream.write(0xFFFF);
+        outputStream.write(buffer.array());
         outputStream.write(message.getBytes());
 
-        PRINT_WRITER.println(outputStream);
+        PRINT_WRITER.println(outputStream.toByteArray());
         log.info("message \"{}\" sent", outputStream);
         log.info("encoded message \"{}\" sent", outputStream);
     }
