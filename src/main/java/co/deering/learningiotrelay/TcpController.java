@@ -53,12 +53,10 @@ public class TcpController {
 
     @GetMapping("/send-with-offset")
     public void sendWithOffset(@RequestParam String message) throws IOException {
-        byte[] encoded = "0xFFFF".getBytes(StandardCharsets.UTF_16BE);
-        byte[] withOffset = Arrays.copyOfRange(message.getBytes(), 2, message.length());
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        outputStream.write(encoded);
-        outputStream.write(withOffset);
+        outputStream.write(0xFFFF);
+        outputStream.write(message.getBytes());
 
         PRINT_WRITER.println(outputStream);
         log.info("message \"{}\" sent", outputStream);
