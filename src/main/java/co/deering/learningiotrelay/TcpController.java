@@ -56,11 +56,41 @@ public class TcpController {
     @GetMapping("/send-with-offset")
     public void sendWithOffset(@RequestParam String message) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        outputStream.write(new BigInteger("FFFF", 16).toByteArray());
+        outputStream.write(convertHEXString2ByteArray("FFFF"));
         outputStream.write(message.getBytes());
 
         PRINT_WRITER.println(outputStream.toByteArray());
         log.info("message \"{}\" sent", outputStream);
+    }
+
+    private byte[] convertHEXString2ByteArray(String value) {
+        if (value == null || value.length() == 0) {
+            return null;
+        } else {//from   w  ww .  j  a  va 2  s.  co  m
+            char[] array = value.toCharArray();
+            int ext = array.length % 2; // can be 0 or 1 only!
+            byte[] out = new byte[array.length / 2 + ext];
+            for (int i = 0; i < array.length - ext; i += 2) {
+                String part = new String(array, i, 2);
+                try {
+                    out[i / 2] = (byte) Integer.parseInt(part, 16);
+                } catch (NumberFormatException e) {
+                    // ignore conversion error
+                    out[i / 2] = 0;
+                }
+            }
+
+            if (ext != 0) {
+                String part = String.valueOf(array[array.length - 1]);
+                try {
+                    out[out.length - 1] = (byte) Integer.parseInt(part, 16);
+                } catch (NumberFormatException e) {
+                    // ignore conversion error
+                    out[out.length - 1] = 0;
+                }
+            }
+            return out;
+        }
     }
 
     @GetMapping("/listen")
