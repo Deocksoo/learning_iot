@@ -7,9 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.ByteBuffer;
@@ -20,6 +18,9 @@ import java.util.Arrays;
 @RestController
 public class TcpController {
     public static ServerSocket SERVER_SOCKET;
+    public static Socket SOCKET;
+
+    public static BufferedReader BUFFERED_READER;
     public static PrintWriter PRINT_WRITER;
 
     @ServiceActivator
@@ -28,11 +29,14 @@ public class TcpController {
         try {
             SERVER_SOCKET = new ServerSocket(8000);
             log.info("server start");
-
-            Socket socket = SERVER_SOCKET.accept();
-
-            OutputStream outputStream = socket.getOutputStream();
+            SOCKET = SERVER_SOCKET.accept();
+            OutputStream outputStream = SOCKET.getOutputStream();
             PRINT_WRITER = new PrintWriter(outputStream, true);
+
+            InputStream inputStream = SOCKET.getInputStream();
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            BUFFERED_READER = new BufferedReader(inputStreamReader);
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -51,9 +55,17 @@ public class TcpController {
         PRINT_WRITER.println(withOffset);
     }
 
+    @GetMapping("/listen")
+    public void listen() throws IOException {
+        while (true) {
+            System.out.println(BUFFERED_READER.readLine());
+        }
+    }
+
     @GetMapping("/release")
     public void relase() throws IOException {
         PRINT_WRITER.close();
+        BUFFERED_READER.close();
         SERVER_SOCKET.close();
     }
 }

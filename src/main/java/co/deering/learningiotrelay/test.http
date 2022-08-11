@@ -1,10 +1,25 @@
+GET 43.200.37.89:8080/open/socket
+
+###
+GET 43.200.37.89:8080/send?message=*HBCR,NB,860640052170273,V0,1
+
+###
+GET 43.200.37.89:8080/send-with-offset?message=*HBCR,NB,860640052170273,V0,1
+
+###
+GET 43.200.37.89:8080/release
+
+###
 GET localhost:8080/open/socket
 
 ###
-GET localhost:8080/send?message=hehehe
+GET localhost:8080/send?message=*HBCR,NB,860640052170273,V0,1
 
 ###
-GET localhost:8080/send-with-offset?message=hehehe
+GET localhost:8080/send-with-offset?message=*HBCR,NB,860640052170273,V0,1
+
+###
+GET localhost:8080/listen
 
 ###
 GET localhost:8080/release
