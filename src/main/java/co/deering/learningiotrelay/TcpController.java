@@ -68,7 +68,7 @@ public class TcpController {
     public void sendWithOffset2(@RequestParam String message) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         outputStream.write(convertHEXString2ByteArray("FFFF"));
-        outputStream.write("*HBCS,NB,860640052170273,R0,0,60,1234,1497689820#\n".getBytes());
+        outputStream.write("*HBCS,NB,860640052170273,R0,0,60,1234,1660747046#\n".getBytes());
 
         PRINT_WRITER.println(outputStream.toByteArray());
         log.info("message \"{}\" sent", outputStream);
