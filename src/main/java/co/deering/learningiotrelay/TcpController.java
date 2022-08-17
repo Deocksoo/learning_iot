@@ -60,7 +60,7 @@ public class TcpController {
         outputStream.write(convertHEXString2ByteArray("FFFF"));
         outputStream.write("*HBCR,NB,860640052170273,V0,2#\n".getBytes());
 
-        PRINT_WRITER.println(outputStream.toByteArray());
+        PRINT_WRITER.print(outputStream.toByteArray());
         log.info("message \"{}\" sent", outputStream);
     }
 
@@ -70,7 +70,7 @@ public class TcpController {
         outputStream.write(convertHEXString2ByteArray("FFFF"));
         outputStream.write("*HBCS,NB,860640052170273,R0,0,60,1234,1660747046#\n".getBytes());
 
-        PRINT_WRITER.println(outputStream.toByteArray());
+        PRINT_WRITER.print(outputStream.toByteArray());
         log.info("message \"{}\" sent", outputStream);
     }
 
