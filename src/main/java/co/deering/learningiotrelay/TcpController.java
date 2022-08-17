@@ -34,6 +34,7 @@ public class TcpController {
             SOCKET = SERVER_SOCKET.accept();
             OutputStream outputStream = SOCKET.getOutputStream();
             PRINT_WRITER = new PrintWriter(outputStream, true);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
             BufferedWriter bufferedWriter = new BufferedWriter(PRINT_WRITER);
 
             InputStream inputStream = SOCKET.getInputStream();
@@ -57,11 +58,22 @@ public class TcpController {
     public void sendWithOffset(@RequestParam String message) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         outputStream.write(convertHEXString2ByteArray("FFFF"));
-        outputStream.write(message.getBytes());
+        outputStream.write("*HBCR,NB,860640052170273,V0,2#\n".getBytes());
 
         PRINT_WRITER.println(outputStream.toByteArray());
         log.info("message \"{}\" sent", outputStream);
     }
+
+    @GetMapping("/send-with-offset2")
+    public void sendWithOffset2(@RequestParam String message) throws IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        outputStream.write(convertHEXString2ByteArray("FFFF"));
+        outputStream.write("*HBCS,NB,860640052170273,R0,0,60,1234,1497689820#\n".getBytes());
+
+        PRINT_WRITER.println(outputStream.toByteArray());
+        log.info("message \"{}\" sent", outputStream);
+    }
+
 
     private byte[] convertHEXString2ByteArray(String value) {
         if (value == null || value.length() == 0) {
